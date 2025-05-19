@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h2>Update Car</h2>
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {% if image_data %}
+      <img src="data:image/jpeg;base64,{{ image_data }}" alt="Car Image" width="300">
+  {% else %}
+      <p>No image uploaded.</p>
+  {% endif %}
+</br>
+  <button type="submit" class="btn btn-success">Update Car</button>
+</form>
+
+    <a href="{% url 'list_cars' %}" class="btn btn-secondary mt-3">Back to Cars</a>
+  </div>
+{% endblock %}

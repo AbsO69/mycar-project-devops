@@ -1,0 +1,63 @@
+<!-- Customer List Page Title -->
+<h2 class="page-title">Customer List</h2>
+
+<!-- Customer Controls: New Customer Button and Search Bar -->
+<div class="customer-controls">
+  <button class="new-customer-btn" (click)="createCustomer()">+ New Customer</button>
+  <div class="search-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="filterText" 
+      placeholder="Search by Name or ID"
+      (input)="loadCustomers()"
+    />
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-indicator">
+  <span class="loader"></span> Loading customers...
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="error-message">
+  <span class="error-icon">⚠️</span> {{ error }}
+</div>
+
+<!-- Customer List Table -->
+<div *ngIf="!loading && !error" class="customer-table-container">
+  <table class="customer-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let customer of paginateCustomers(filterCustomers())">
+        <td>{{ customer.id }}</td>
+        <td>{{ customer.first_name }} {{ customer.last_name }}</td> <!-- Combine first and last name -->
+        <td>{{ customer.email }}</td>
+        <td>{{ customer.phone }}</td>
+        <td class="action-buttons">
+          <button class="edit-btn" (click)="router.navigate(['/customers', customer.id, 'edit'])">Edit</button>
+          <button class="delete-btn" (click)="deleteCustomer(customer.id)">Delete</button>
+        </td>
+      </tr>
+      <!-- No results message -->
+      <tr *ngIf="filterCustomers().length === 0">
+        <td colspan="5" style="text-align: center; padding: 1rem;">No customers found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination Controls -->
+<div *ngIf="filterCustomers().length > 0" class="pagination">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage <= 1">Prev</button>
+  <span>Page {{ currentPage }}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="filterCustomers().length < itemsPerPage">Next</button>
+</div>

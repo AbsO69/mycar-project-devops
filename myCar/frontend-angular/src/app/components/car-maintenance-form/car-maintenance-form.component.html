@@ -1,0 +1,42 @@
+<div class="container">
+    <h2>{{ isEdit ? 'Edit' : 'New' }} Car Maintenance</h2>
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="form-group">
+        <label>Car</label>
+        <select formControlName="car_id" class="form-control">
+          <option [ngValue]="null">-- select car --</option>
+          <option *ngFor="let c of cars" [ngValue]="c.id">
+            {{ c.make }} {{ c.model }} ({{ c.license_plate }})
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Task</label>
+        <select formControlName="task_id" class="form-control">
+          <option [ngValue]="null">-- select task --</option>
+          <option *ngFor="let t of tasks" [ngValue]="t.id">
+            {{ t.name }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Date Performed</label>
+        <input type="date" formControlName="performed_at" class="form-control" />
+      </div>
+  
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea formControlName="notes" class="form-control" rows="3"></textarea>
+      </div>
+  
+      <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+        {{ isEdit ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" class="btn btn-secondary ml-2" (click)="cancel()">
+        Cancel
+      </button>
+    </form>
+  </div>
+  

@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">My Car CRM</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                {% if user.is_authenticated %}
+
+                    <!-- Maintenance Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                            🛠️ Maintenance
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'car_maintenance_list' %}">Car Maintenance</a></li>
+                            <li><a class="dropdown-item" href="{% url 'maintenance_task_list' %}">Maintenance Tasks</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Cars Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                            🚘 Cars
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'list_cars' %}">List Cars</a></li>
+                            <li><a class="dropdown-item" href="{% url 'add_car' %}">Add Car</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Customers Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                            👥 Customers
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'list_customers' %}">List Customers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'add_record' %}">Add Customer</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Transactions Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown">
+                            💰 Transactions
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url 'list_transactions' %}">Transaction List</a></li>
+                            <li><a class="dropdown-item" href="{% url 'list_payments' %}">Payments</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold text-warning" href="{% url 'logout' %}">🚪 Logout</a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item {% if request.path == '/register/' %}active{% endif %}">
+                        <a class="nav-link fw-semibold text-white" href="{% url 'register' %}">📝 Register</a>
+                    </li>
+                    <li class="nav-item {% if request.path == '/home/' %}active{% endif %}">
+                        <a class="nav-link fw-semibold text-white" href="{% url 'home' %}">🔑 Login</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </div>
+    </div>
+</nav>

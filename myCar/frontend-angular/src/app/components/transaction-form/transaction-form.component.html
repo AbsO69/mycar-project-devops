@@ -1,0 +1,107 @@
+<!-- src/app/components/transaction-form/transaction-form.component.html -->
+
+<!-- Wrap everything in .form-container, show loading or the form -->
+<div class="form-container" *ngIf="!loading; else loadingTpl">
+  <!-- Header -->
+  <h2 *ngIf="transaction">
+    {{ transaction.id ? ('Edit Transaction #' + transaction.id) : 'New Transaction' }}
+  </h2>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <!-- The reactive form -->
+  <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+
+
+    <!-- Car Selection -->
+    <div class="form-group">
+      <label>Car</label>
+      <select formControlName="car">
+        <option *ngFor="let car of cars" [value]="car.id">
+          {{ car.year }} {{ car.make }} {{ car.model }} ({{ car.license_plate }})
+        </option>
+      </select>
+    </div>
+
+    <!-- Customer Selection -->
+    <div class="form-group">
+      <label>Customer</label>
+      <select formControlName="customer">
+        <option *ngFor="let customer of customers" [value]="customer.id">
+          {{ customer.first_name }} {{ customer.last_name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Rental Start Date -->
+    <div class="form-group">
+      <label>Start Date</label>
+      <input type="datetime-local" formControlName="rental_start_date" />
+    </div>
+
+    <!-- Rental End Date -->
+    <div class="form-group">
+      <label>End Date</label>
+      <input type="datetime-local" formControlName="rental_end_date" />
+    </div>
+
+    <!-- Rental Price -->
+    <div class="form-group">
+      <label>Price</label>
+      <input type="number" step="0.01" formControlName="rental_price" />
+    </div>
+
+    <!-- Status -->
+    <div class="form-group">
+      <label>Status</label>
+      <select formControlName="status">
+        <option value="ongoing">Ongoing</option>
+        <option value="completed">Completed</option>
+        <option value="canceled">Canceled</option>
+      </select>
+    </div>
+
+    <!-- Payment Status -->
+    <div class="form-group">
+      <label>Payment Status</label>
+      <select formControlName="payment_status">
+        <option value="paid">Paid</option>
+        <option value="unpaid">Unpaid</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+
+
+    <div *ngIf="form.errors?.['dateRangeInvalid'] && form.touched" class="error-message">
+      ⚠️ Rental start date cannot be after end date.
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit" [disabled]="form.invalid">
+      {{ transaction?.id ? 'Save Changes' : 'Create Transaction' }}
+    </button>
+  </form>
+
+ 
+  <!-- Add Payment (only when unpaid) -->
+  <button
+    *ngIf="transaction?.payment_status === 'unpaid'"
+    class="add-payment-btn"
+    (click)="addPayment()"
+  >
+    Add Payment
+  </button>
+  <button type="button" class="cancel-btn" (click)="onCancel()">
+    Cancel
+  </button>
+</div>
+
+<!-- Loading Template -->
+<ng-template #loadingTpl>
+  <div class="loading-indicator">
+    <span class="loader"></span> Loading…
+  </div>
+</ng-template>

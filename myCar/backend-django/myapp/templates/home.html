@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container mt-5">
+
+    <h2 class="text-center my-4 text-primary">Dashboard</h2>
+    <p class="text-muted text-center">Overview of your transactions, cars, and revenue statistics</p>
+
+    <!-- Transaction Overview -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-info text-white">
+                    <h5>Total Transactions</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="display-4">{{ total_transactions }}</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-warning text-white">
+                    <h5>Transaction Status</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><strong>Ongoing:</strong> {{ ongoing_transactions }}</li>
+                        <li><strong>Completed:</strong> {{ completed_transactions }}</li>
+                        <li><strong>Canceled:</strong> {{ canceled_transactions }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-success text-white">
+                    <h5>Payment Status</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><strong>Paid:</strong> {{ payment_status_paid }}</li>
+                        <li><strong>Unpaid:</strong> {{ payment_status_unpaid }}</li>
+                        <li><strong>Pending:</strong> {{ payment_status_pending }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Transactions -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-dark text-white">
+                    <h5>Recent Transactions</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Customer</th>
+                                <th>Car</th>
+                                <th>Status</th>
+                                <th>Payment Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaction in recent_transactions %}
+                                <tr>
+                                    <td>{{ transaction.id }}</td>
+                                    <td>{{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</td>
+                                    <td>{{ transaction.car.make }} {{ transaction.car.model }}</td>
+                                    <td>{{ transaction.status }}</td>
+                                    <td>{{ transaction.payment_status }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No recent transactions.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Car Utilization -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-primary text-white">
+                    <h5>Total Cars</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="display-4">{{ total_cars }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-danger text-white">
+                    <h5>Cars Currently Rented</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="display-4">{{ rented_cars }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-secondary text-white">
+                    <h5>Cars Available</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="display-4">{{ available_cars }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Most Rented Cars -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-info text-white">
+                    <h5>Most Rented Cars</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Car</th>
+                                <th>Rentals</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for car in most_rented_cars %}
+                                <tr>
+                                    <td>{{ car.make }} {{ car.model }} ({{ car.year }})</td>
+                                    <td>{{ car.rent_count }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">No rented cars data available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Revenue Data -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-success text-white">
+                    <h5>Total Revenue</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h3 class="display-4">${{ total_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-warning text-white">
+                    <h5>Revenue by Payment Status</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li><strong>Paid:</strong> ${{ paid_revenue }}</li>
+                        <li><strong>Pending:</strong> ${{ pending_revenue }}</li>
+                        <li><strong>Failed:</strong> ${{ failed_revenue }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Revenue by Car -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm border-light">
+                <div class="card-header bg-dark text-white">
+                    <h5>Revenue by Car</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Car</th>
+                                <th>Total Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for car in revenue_by_car %}
+                                <tr>
+                                    <td>{{ car.transaction__car__make }} {{ car.transaction__car__model }}</td>
+                                    <td>${{ car.total_revenue }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">No revenue data available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{% else %}
+<div class="col-md-6 offset-md-3">
+    <h1 class="text-center">Login</h1>
+    <br/>
+    <form method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input type="text" class="form-control" name="username" placeholder="Username" required>
+        </div>
+        <br/>
+        <div class="mb-3">
+            <input type="password" class="form-control" name="password" placeholder="Password" required>
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-success btn-block">Login</button>
+    </form>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-primary">Maintenance Tasks</h2>
+        <a href="{% url 'create_maintenance_task' %}" class="btn btn-success">
+            ➕ Create New Maintenance Task
+        </a>
+    </div>
+
+    {% if tasks %}
+        <div class="card shadow-sm">
+            <ul class="list-group list-group-flush">
+                {% for task in tasks %}
+                    <li class="list-group-item">
+                        <strong>{{ task.name }}</strong>: {{ task.description }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center">
+            No maintenance tasks available.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

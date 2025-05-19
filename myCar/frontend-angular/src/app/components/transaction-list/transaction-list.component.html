@@ -1,0 +1,71 @@
+<h2 class="page-title">Transactions</h2>
+
+<div class="transaction-controls">
+  <button class="new-transaction-btn" (click)="createTransaction()">+ New Transaction</button>
+  <div class="search-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="filterText"  
+      placeholder="Search by ID" 
+      (input)="onFilterChange()" 
+    />
+  </div>
+</div>
+
+
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-indicator">
+  <span class="loader"></span> Loading transactions...
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="error-message">
+  <span class="error-icon">⚠️</span> {{ error }}
+</div>
+
+<!-- Transaction List Table -->
+<div *ngIf="!loading && !error" class="transaction-table-container">
+  <table class="transaction-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Price</th>
+        <th>Status</th>
+        <th (click)="sortByPaymentStatus()" style="cursor: pointer;">
+          Payment
+          <span *ngIf="paymentSortDirection === 'asc'">▲</span>
+          <span *ngIf="paymentSortDirection === 'desc'">▼</span>
+        </th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let tx of filteredTransactions">
+        <td>{{ tx.id }}</td>
+        <td>{{ tx.rental_start_date | date:'short' }}</td>
+        <td>{{ tx.rental_end_date | date:'short' }}</td>
+        <td>{{ tx.rental_price | currency }}</td>
+        <td>{{ tx.status }}</td>
+        <td>{{ tx.payment_status }}</td>
+        <td class="action-buttons">
+          <button class="edit-btn" (click)="editTransaction(tx.id)">Edit</button>
+          <button class="delete-btn" (click)="deleteTransaction(tx.id)">Delete</button>
+          <button *ngIf="tx.payment_status === 'unpaid'" class="add-payment-btn" (click)="addPayment(tx)">Add Payment</button>
+        </td>
+      </tr>
+
+      <!-- No results message -->
+      <tr *ngIf="filteredTransactions.length === 0">
+        <td colspan="7" style="text-align: center; padding: 1rem;">No transactions found.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- Pagination Controls -->
+<div *ngIf="filteredTransactions.length > 0" class="pagination">
+  <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage <= 1">Prev</button>
+  <span>Page {{ currentPage }}</span>
+  <button (click)="onPageChange(currentPage + 1)" [disabled]="filteredTransactions.length < itemsPerPage">Next</button>
+</div>

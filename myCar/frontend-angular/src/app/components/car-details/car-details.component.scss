@@ -1,0 +1,266 @@
+// car-details.component.scss
+
+/* Modern Material Design with cool enhancements */
+$primary: #4361ee;
+$secondary: #3a0ca3;
+$accent: #4cc9f0;
+$dark: #2b2d42;
+$light: #f8f9fa;
+$orange-accent: #f8961e; // For your orange Kia!
+
+mat-tab-group {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', -apple-system, sans-serif;
+  
+  /* Tab header styling */
+  .mat-tab-header {
+    background: linear-gradient(135deg, $primary, $secondary);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+  }
+  
+  .mat-tab-label {
+    height: 56px;
+    color: rgba(white, 0.8);
+    font-weight: 500;
+    opacity: 1;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: white;
+      background: rgba(white, 0.1);
+    }
+    
+    &.mat-tab-label-active {
+      color: white;
+      font-weight: 600;
+    }
+  }
+  
+  .mat-ink-bar {
+    background: $accent;
+    height: 4px;
+  }
+  
+  .mat-tab-body-content {
+    padding: 24px;
+    background: white;
+    animation: fadeIn 0.4s ease-out;
+  }
+}
+
+/* Car Details Tab - Enhanced */
+mat-tab:first-child {
+  p {
+    display: flex;
+    margin: 0 0 16px 0;
+    padding: 16px;
+    background: $light;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    align-items: center;
+    
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    strong {
+      color: $primary;
+      min-width: 140px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      opacity: 0.9;
+    }
+    
+    /* Special styling for specific fields */
+    &:nth-child(1) strong { color: $secondary; } // Make
+    &:nth-child(2) strong { color: $orange-accent; } // Model (orange for Kia!)
+    &:nth-child(3) strong { color: $dark; } // Year
+    &:nth-child(4) { // VIN
+      background: linear-gradient(90deg, rgba($accent, 0.1), white);
+      border-left: 4px solid $accent;
+    }
+    &:nth-child(5) { // Color
+      &::after {
+        content: "";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: orange; // Dynamic color would be better
+        border-radius: 50%;
+        margin-left: 12px;
+        border: 2px solid rgba($dark, 0.1);
+      }
+    }
+    &:nth-child(6) strong { color: $secondary; } // License Plate
+    &:nth-child(7) { // Mileage
+      strong::before {
+        content: "➔ ";
+        color: $orange-accent;
+      }
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+.car-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: cover;
+  border: 4px solid lighten($primary, 20%);
+
+  &:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+
+/* Maintenance Lists - Cool enhancements */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+  li {
+    padding: 16px;
+    margin-bottom: 12px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    &::before {
+      content: "•";
+      color: $accent;
+      font-size: 24px;
+      margin-right: 12px;
+    }
+  }
+}
+
+/* Empty states */
+ng-template p {
+  text-align: center;
+  padding: 24px;
+  background: $light;
+  border-radius: 12px;
+  color: $dark;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  mat-tab-group {
+    .mat-tab-body-content {
+      padding: 16px;
+    }
+    
+    p {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      strong {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+/* src/app/components/car-details/car-details.component.scss */
+
+.center-mat-tab-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;      /* center horizontally */
+    justify-content: center;  /* center vertically if needed */
+    max-width: 600px;         /* limit width for readability */
+    margin: 0 auto;           /* center block in its container */
+    padding: 1rem 2rem;       /* breathing room */
+    background: #fff;         /* white background */
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  
+    p {
+      width: 100%;
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      color: #333;
+      strong {
+        width: 120px;
+        display: inline-block;
+        color: #1976d2;
+      }
+    }
+  }
+  .tab-list-content {
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    max-width: 700px;
+    margin: 1rem auto;
+  
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+      li {
+        
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #eee;
+        transition: background 0.2s ease, transform 0.1s ease;
+  
+        &:last-child {
+          border-bottom: none;
+        }
+  
+        &:hover {
+          background: #f0f7ff;
+          transform: translateY(-1px);
+        }
+  
+        /* Task/Record title */
+        .item-title {
+          font-weight: 600;
+          color: #1976d2;
+        }
+  
+        /* Secondary info, e.g. status or date */
+        .item-meta {
+          font-size: 0.875rem;
+          color: #555;
+        }
+      }
+    }
+  
+    /* Empty state message */
+    p {
+      text-align: center;
+      color: #888;
+      font-style: italic;
+      margin: 1rem 0;
+    }
+  }

@@ -1,0 +1,241 @@
+/* src/app/app.component.scss */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f1f3f5;
+  }
+  
+  /* Shared link style */
+  nav a {
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* ------------------------ */
+  /* 🔐 Authenticated Navbar */
+  /* ------------------------ */
+  .auth-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 16px 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+  
+    .nav-left,
+    .nav-right {
+      display: flex;
+      align-items: center;
+    }
+  
+    a {
+      color: #333;
+  
+      &:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
+    }
+  
+    .nav-right a {
+      background-color: #dc3545;
+      color: white;
+  
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+  
+  /* ------------------- */
+  /* 👤 Guest Navbar     */
+  /* ------------------- */
+  .guest-navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #f8f9fa;
+    padding: 16px;
+  
+    .nav-center {
+      display: flex;
+      gap: 20px;
+    }
+  
+    a {
+      background-color: #007bff;
+      color: white;
+  
+      &:hover {
+        background-color: #0056b3;
+      }
+    }
+  }
+  
+  /* Content margin below nav */
+  router-outlet {
+    display: block;
+    margin-top: 20px;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    min-height: 100vh;
+  }
+  /* 🌄 Guest background image */
+.guest-background {
+  background: url('/assets/guest-background.jpg') no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* 💬 Chatbot Button */
+.chatbot-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+/* 🪟 Chatbot Window */
+.chatbot-window {
+  position: fixed;
+  bottom: 100px;
+  right: 30px;
+  width: 300px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+}
+
+.chatbot-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  cursor: pointer;
+}
+
+.chatbot-body {
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;
+}
+.chatbot-message {
+  background-color: #f1f1f1;
+  padding: 8px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.chatbot-input {
+  display: flex;
+  margin-top: 10px;
+
+  input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+  }
+
+  button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+
+/* Dropdown in nav-left */
+.nav-left {
+  display: flex;
+  align-items: center;
+
+  .dropdown {
+    position: relative;
+    margin-right: 0px;
+
+    .dropdown-toggle {
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+      &:hover { background-color: #f0f0f0; }
+    }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 5px;
+      min-width: 180px;
+      padding: 8px 0;
+      z-index: 1000;
+
+      a {
+        display: block;
+        padding: 8px 16px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.2s;
+        &:hover { background-color: #e9ecef; }
+      }
+    }
+
+    /* Show on hover */
+    &:hover .dropdown-menu {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,81 @@
+<div class="form-container">
+  <h2 class="page-title">{{ isEditMode ? 'Edit Car' : 'Add New Car' }}</h2>
+
+  <form [formGroup]="carForm" (ngSubmit)="onSubmit()" class="car-form">
+    <div class="form-group">
+      <label>Make</label>
+      <input formControlName="make" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label>Model</label>
+      <input formControlName="model" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label>Year</label>
+      <input formControlName="year" type="number" />
+    </div>
+
+    <div class="form-group">
+      <label>VIN</label>
+      <input formControlName="vin" type="text" maxlength="17" />
+    </div>
+
+    <div class="form-group">
+      <label>Color</label>
+      <input formControlName="color" type="text" />
+    </div>
+
+    <div class="form-group">
+      <label>License Plate</label>
+      <input formControlName="license_plate" type="text" />
+      <div class="error-message" *ngIf="carForm.get('license_plate')?.errors?.['serverError']">
+          ⚠️ {{ carForm.get('license_plate')?.errors?.['serverError'] }}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Mileage</label>
+      <input formControlName="mileage" type="number" />
+    </div>
+
+    <div class="form-group">
+      <label>Fuel Type</label>
+      <select formControlName="fuel_type">
+        <option value="gas">Gasoline</option>
+        <option value="diesel">Diesel</option>
+        <option value="electric">Electric</option>
+        <option value="hybrid">Hybrid</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Car Image</label>
+      <!-- <input type="file" (change)="onFileChange($event)" /> -->
+      <!-- Image Preview -->
+      <!-- <div *ngIf="imagePreview" class="image-preview"> -->
+        <!-- <img [src]="imagePreview" alt="Image Preview" /> -->
+
+        <input type="file" (change)="onFileChange($event)" />
+        <div *ngIf="imagePreview" class="image-preview">
+          <img [src]="imagePreview" alt="Image Preview" />
+        </div>
+        <button *ngIf="isEditMode" type="button" (click)="onDeleteImage()">🗑️ Remove Image</button>
+
+      <!-- </div> -->
+    </div>
+
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="loading">
+        {{ isEditMode ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" (click)="router.navigate(['/cars'])">Cancel</button>
+    </div>
+
+    <div *ngIf="error" class="error-message">
+      ⚠️ {{ error }}
+    </div>
+  </form>
+</div>

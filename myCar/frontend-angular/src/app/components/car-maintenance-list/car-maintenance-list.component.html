@@ -1,0 +1,29 @@
+<div class="container">
+    <h2>Car Maintenance Records</h2>
+    <button (click)="addNew()" class="btn btn-primary mb-3">New Record</button>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Car</th>
+          <th>Task</th>
+          <th>Date</th>
+          <th>Notes</th>
+          <!-- <th style="width: 150px;">Actions</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of records">
+          <td>{{ r.car_make }} {{ r.car_model }} ({{ r.license_plate }})</td>
+          <td>{{ r.task.name }}</td>
+          <td>{{ r.performed_at | date:'shortDate' }}</td>
+          <td>{{ r.notes }}</td>
+          <!-- <td class="action-buttons">
+            <button (click)="edit(r.id)" class="btn btn-sm btn-outline-secondary">Edit</button>
+            <button (click)="delete(r.id)" class="btn btn-sm btn-outline-danger ml-2">Delete</button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

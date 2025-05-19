@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-primary">Car Maintenance Records</h2>
+
+    <!-- Search & Sort Section -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <form method="get" class="row g-2">
+                <div class="col-md-5">
+                    <input type="text" name="car" class="form-control" value="{{ search_car }}" placeholder="Search by car license plate">
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name="task" class="form-control" value="{{ search_task }}" placeholder="Search by task name">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-md-4">
+            <form method="get" class="d-flex">
+                <select name="sort" class="form-select me-2">
+                    <option value="performed_at" {% if sort_by == 'performed_at' %}selected{% endif %}>Sort by Date</option>
+                    <option value="car__license_plate" {% if sort_by == 'car__license_plate' %}selected{% endif %}>Sort by Car</option>
+                    <option value="task__name" {% if sort_by == 'task__name' %}selected{% endif %}>Sort by Task</option>
+                </select>
+                <button type="submit" class="btn btn-secondary">Sort</button>
+            </form>
+        </div>
+    </div>
+    <div class="text-end mt-4">
+        <a href="{% url 'add_car_maintenance' %}" class="btn btn-success">
+            ➕ Add New Maintenance Record
+        </a>
+    </div>
+    <!-- Maintenance Records Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Car</th>
+                        <th>Task</th>
+                        <th>Date Performed</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for maintenance in car_maintenance %}
+                        <tr>
+                            <td>{{ maintenance.car }}</td>
+                            <td>{{ maintenance.task.name }}</td>
+                            <td>{{ maintenance.performed_at|date:"Y-m-d H:i" }}</td>
+                            <td>{{ maintenance.notes|default:"-" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted">No maintenance records found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add New Record Button -->
+    
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5 p-4 bg-light rounded shadow-sm">
+
+    <h2 class="text-center mb-4">Transaction Details</h2>
+
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="transactionTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="customer-tab" data-bs-toggle="tab" data-bs-target="#customer-details" type="button" role="tab" aria-controls="customer-details" aria-selected="true">Customer Details</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction-details" type="button" role="tab" aria-controls="transaction-details" aria-selected="false">Transaction Details</button>
+        </li>
+        {% if transaction.payment and transaction.payment.receipt_pdf %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="receipt-tab" data-bs-toggle="tab" data-bs-target="#receipt-details" type="button" role="tab" aria-controls="receipt-details" aria-selected="false">Payment Receipt</button>
+        </li>
+        {% endif %}
+    </ul>
+
+    <!-- Tabs Content -->
+    <div class="tab-content mt-3" id="transactionTabsContent">
+        <!-- Customer Details Tab -->
+        <div class="tab-pane fade show active" id="customer-details" role="tabpanel" aria-labelledby="customer-tab">
+            <h3>Customer Details</h3>
+            <p><strong>Customer ID:</strong> {{ transaction.customer.id }}</p>
+            <p><strong>First Name:</strong> {{ transaction.customer.first_name }}</p>
+            <p><strong>Last Name:</strong> {{ transaction.customer.last_name }}</p>
+            <p><strong>Email:</strong> {{ transaction.customer.email }}</p>
+            <p><strong>Phone:</strong> {{ transaction.customer.phone }}</p>
+            <p><strong>Address:</strong> {{ transaction.customer.address }}</p>
+            <p><strong>City:</strong> {{ transaction.customer.city }}</p>
+            <p><strong>State:</strong> {{ transaction.customer.state }}</p>
+            <p><strong>Zipcode:</strong> {{ transaction.customer.zipcode }}</p>
+        </div>
+
+        <!-- Transaction Details Tab -->
+        <div class="tab-pane fade" id="transaction-details" role="tabpanel" aria-labelledby="transaction-tab">
+            <h3>Transaction Details</h3>
+            <p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+            <p><strong>Rental Start Date:</strong> {{ transaction.rental_start_date }}</p>
+            <p><strong>Rental End Date:</strong> {{ transaction.rental_end_date }}</p>
+            <p><strong>Rental Price:</strong> ${{ transaction.rental_price }}</p>
+            <p><strong>Status:</strong> {{ transaction.status }}</p>
+            <p><strong>Payment Status:</strong> {{ transaction.payment_status }}</p>
+            <p><strong>Created At:</strong> {{ transaction.created_at }}</p>
+            <p><strong>Updated At:</strong> {{ transaction.updated_at }}</p>
+            <p><strong>Car ID:</strong> {{ transaction.car.id }}</p>
+            <p><strong>Car:</strong> {{ transaction.car.make }} {{ transaction.car.model }}</p>
+        </div>
+
+        <!-- Payment Receipt Tab (only shown if a PDF exists) -->
+        {% if transaction.payment and transaction.payment.receipt_pdf %}
+        <div class="tab-pane fade" id="receipt-details" role="tabpanel" aria-labelledby="receipt-tab">
+            <h3>Payment Receipt</h3>
+
+            <!-- Buttons for Opening and Viewing Receipt -->
+            <div class="d-flex align-items-center">
+                <a href="{% url 'view_payment_pdf' payment_id=transaction.payment.id %}" target="_blank" class="btn btn-info mb-3 mr-2">
+                    Open Receipt
+                </a>
+                <span style="margin: 10px;"></span>
+                {% if transaction.payment %}
+                <a href="{% url 'view_payment_pdf_from_binary' payment_id=transaction.payment.id %}" target="_blank" class="btn btn-warning mb-3 d-inline-flex align-items-center">
+                    <i class="bi bi-file-earmark-pdf mr-2"></i> View Payment Receipt (Binary)
+                </a>
+                {% else %}
+                <p>No payment found for this transaction.</p>
+                {% endif %}
+            </div>
+
+            <!-- PDF Viewer -->
+            <iframe src="{% url 'view_payment_pdf' payment_id=transaction.payment.id %}" width="100%" height="600px" style="border:1px solid #ccc; border-radius: 8px;"></iframe>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="text-center mt-4">
+        {% if can_add_payment %}
+            <a href="{% url 'add_payment' transaction_id=transaction.id %}" class="btn btn-success">Add Payment</a>
+        {% endif %}
+        <a href="{% url 'list_transactions' %}" class="btn btn-primary">Back to Transactions</a>
+    </div>
+</div>
+{% endblock %}

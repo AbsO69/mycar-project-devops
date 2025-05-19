@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="text-center my-4">List of Transactions</h2>
+
+<!-- Add Transaction Button -->
+<div class="text-end mb-3">
+    <a href="{% url 'add_transaction' %}" class="btn btn-success">
+        ➕ Add Transaction
+    </a>
+</div>
+
+<!-- Filter by Payment Status -->
+<div class="mb-3">
+    <form method="GET" class="d-flex justify-content-end">
+        <select name="payment_status" class="form-select w-auto" onchange="this.form.submit()">
+            <option value="">All Payment Status</option>
+            <option value="paid" {% if payment_status_filter == 'paid' %}selected{% endif %}>Paid</option>
+            <option value="pending" {% if payment_status_filter == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="unpaid" {% if payment_status_filter == 'unpaid' %}selected{% endif %}>Unpaid</option>
+            <option value="failed" {% if payment_status_filter == 'failed' %}selected{% endif %}>Failed</option>
+        </select>
+        <input type="text" name="transaction_id" class="form-control w-auto ms-3" placeholder="Search by Transaction ID" value="{{ transaction_id_search }}" />
+        <button type="submit" class="btn btn-primary ms-2">Search</button>
+    </form>
+</div>
+
+<!-- Transactions Table -->
+<table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark text-center">
+        <tr>
+            <th>Transaction ID</th>
+            <th>Car</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Payment Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody class="table-info">
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td> {{ transaction.car.make }} {{ transaction.car.model }}</td>
+                <td>${{ transaction.rental_price }}</td>
+                <td>{{ transaction.status }}</td>
+                <td>{{ transaction.payment_status }}</td>
+                <td class="text-center">
+                    <a href="{% url 'transaction_detail' pk=transaction.id %}" class="btn btn-info btn-sm">🔍 View</a>
+                    <a href="{% url 'update_transaction' pk=transaction.id %}" class="btn btn-warning btn-sm">✏️ Update</a>
+                    <a href="{% url 'delete_transaction' pk=transaction.id %}" class="btn btn-danger btn-sm">🗑️ Delete</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5" class="text-center text-muted">No transactions available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

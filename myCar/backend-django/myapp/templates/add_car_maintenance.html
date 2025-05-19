@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="mb-4 text-success text-center">Add Car Maintenance</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{% url 'car_maintenance_list' %}" class="btn btn-secondary ms-2">Back to Maintenance List</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

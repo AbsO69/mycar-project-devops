@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Maintenance for {{ car }}</h4>
+        </div>
+        <div class="card-body">
+            <h5 class="mb-3">Maintenance Tasks</h5>
+            
+            {% if car_maintenance %}
+                <ul class="list-group">
+                    {% for maintenance in car_maintenance %}
+                        <li class="list-group-item">
+                            <strong>{{ maintenance.task.name }}</strong><br>
+                            <small class="text-muted">Performed at: {{ maintenance.performed_at }}</small><br>
+                            {% if maintenance.notes %}
+                                <span>{{ maintenance.notes }}</span>
+                            {% else %}
+                                <em class="text-muted">No notes provided.</em>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No maintenance tasks for this car.</p>
+            {% endif %}
+            
+            <a href="{% url 'list_cars' %}" class="btn btn-secondary mt-4">Back to Cars</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

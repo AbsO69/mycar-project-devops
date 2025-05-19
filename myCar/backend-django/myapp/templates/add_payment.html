@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center my-4">Add Payment</h2>
+
+<div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+
+        <!-- Display Transaction Details -->
+        <div class="mb-4">
+            <h5>Transaction Details</h5>
+            <p><strong>Transaction ID:</strong> {{ transaction.id }}</p>
+            <p><strong>Rental Start Date:</strong> {{ transaction.rental_start_date }}</p>
+            <p><strong>Rental End Date:</strong> {{ transaction.rental_end_date }}</p>
+            <p><strong>Rental Price:</strong> ${{ transaction.rental_price }}</p>
+            <p><strong>Status:</strong> {{ transaction.status }}</p>
+            <p><strong>Payment Status:</strong> {{ transaction.payment_status }}</p>
+            <p><strong>Car:</strong> {{ transaction.car.make }} {{ transaction.car.model }}</p>
+            <p><strong>Customer:</strong> {{ transaction.customer.first_name }} {{ transaction.customer.last_name }}</p>
+        </div>
+
+        <!-- Payment Form -->
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Add Payment</button>
+                <a href="{% url 'transaction_detail' pk=transaction.id %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+{% endblock %}

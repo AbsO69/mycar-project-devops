@@ -1,0 +1,60 @@
+<!-- src/app/components/payment-form/payment-form.component.html -->
+
+<ng-container *ngIf="transaction as tx; else loadingTpl">
+    <h2>Add Payment for</h2><h3>Transaction #{{ tx.id }}</h3>
+  
+    <div class="transaction-details">
+      <p><strong>Car:</strong>
+        {{ tx.car.year }} {{ tx.car.make }} {{ tx.car.model }}
+        ({{ tx.car.license_plate }})
+      </p>
+      <p><strong>Customer:</strong>
+        {{ tx.customer.first_name }} {{ tx.customer.last_name }}
+      </p>
+      <p><strong>Rental Price:</strong> ${{ tx.rental_price }}</p>
+      <p><strong>Status:</strong> {{ tx.status | titlecase }}</p>
+      <p><strong>Start:</strong> {{ tx.rental_start_date | date }}</p>
+      <p><strong>End:</strong> {{ tx.rental_end_date | date }}</p>
+    </div>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Payment Amount</label>
+        <input type="number" formControlName="payment_amount" placeholder="Payment Amount" />
+      </div>
+  
+      <div class="form-group">
+        <label>Payment Method</label>
+        <select formControlName="payment_method">
+          <option value="credit_card">Credit Card</option>
+          <option value="debit_card">Debit Card</option>
+          <option value="cash">Cash</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label>Payment Status</label>
+        <select formControlName="payment_status">
+          <option value="paid">Paid</option>
+          <option value="pending">Pending</option>
+          <option value="failed">Failed</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="receipt_pdf">Upload Payment Receipt (PDF):</label>
+      <input type="file" id="receipt_pdf" (change)="onFileChange($event)" />
+      </div>
+
+      <button type="submit" [disabled]="form.invalid">Submit Payment</button>
+    </form>
+  
+    <div *ngIf="error" class="error">{{ error }}</div>
+  </ng-container>
+  <pre *ngIf="apiError" class="error api-error">
+    {{ apiError | json }}
+  </pre>
+  <ng-template #loadingTpl>
+    <div class="loading-indicator">Loading transaction…</div>
+  </ng-template>
+  

@@ -1,0 +1,55 @@
+<ng-container *ngIf="!loading && !error && car; else status">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="center">
+    <mat-tab label="Car Details">
+      <div class="center-mat-tab-content">
+        <!-- Display the car's image if image_data exists -->
+        <div *ngIf="car.image_data; else noImage">
+          <img [src]="'data:image/jpeg;base64,' + car.image_data" alt="Car Image" class="car-image"/>
+        </div>
+        <ng-template #noImage>
+          <p>No image available</p>
+        </ng-template>
+        
+        <p><strong>Make:</strong> {{ car.make }}</p>
+        <p><strong>Model:</strong> {{ car.model }}</p>
+        <p><strong>Year:</strong> {{ car.year }}</p>
+        <p><strong>VIN:</strong> {{ car.vin }}</p>
+        <p><strong>Color:</strong> {{ car.color }}</p>
+        <p><strong>License Plate:</strong> {{ car.license_plate }}</p>
+        <p><strong>Mileage:</strong> {{ car.mileage }}</p>
+        <p><strong>Fuel Type:</strong> {{ car.fuel_type }}</p>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Maintenance Tasks">
+      <div class="tab-list-content" *ngIf="tasks.length; else noTasks">
+        <ul>
+          <li *ngFor="let t of tasks">
+            {{ t.name }} – {{ t.description || 'N/A' }}
+          </li>
+        </ul>
+      </div>
+      <ng-template #noTasks>
+        <p>No maintenance tasks available.</p>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab label="Maintenance Records">
+      <div class="tab-list-content" *ngIf="car.maintenance_records.length; else noRecords">
+        <ul>
+          <li *ngFor="let r of car.maintenance_records">
+            {{ r.performed_at | date:'mediumDate' }} – {{ r.task.name }}
+          </li>
+        </ul>
+      </div>
+      <ng-template #noRecords>
+        <p>No maintenance records found.</p>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>
+
+<ng-template #status>
+  <div *ngIf="loading" class="loading">Loading…</div>
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+</ng-template>

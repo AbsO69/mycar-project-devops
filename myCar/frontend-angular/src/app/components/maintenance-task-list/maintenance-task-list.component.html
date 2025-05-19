@@ -1,0 +1,33 @@
+<!-- src/app/maintenance-task-list/maintenance-task-list.component.html -->
+<div class="container">
+    <h2>Maintenance Tasks</h2>
+  
+    <button (click)="addNew()" class="btn btn-primary mb-3">
+       New Task
+    </button>
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th style="width: 150px;">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tasks">
+          <td>{{ t.name }}</td>
+          <td>{{ t.description }}</td>
+          <td>
+            <button (click)="edit(t.id)" class="btn btn-sm btn-outline-secondary">
+              Edit
+            </button>
+            <button (click)="delete(t.id)" class="btn btn-sm btn-outline-danger ml-2">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

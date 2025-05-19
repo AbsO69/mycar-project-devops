@@ -1,0 +1,73 @@
+<h2 class="page-title">Cars</h2>
+
+<!-- Add Car Button -->
+<div class="car-controls">
+<div class="top-bar">
+  <button class="add-btn" (click)="addCar()">+ Add Car</button>
+</div>
+
+<!-- Search Bar -->
+<form [formGroup]="searchForm">
+  <div class="search-bar">
+    <input 
+      type="text" 
+      formControlName="searchText" 
+      placeholder="Search by model" 
+      (input)="loadCars()" 
+    />
+  </div>
+</form>
+</div>
+<!-- Loading State -->
+<div *ngIf="loading" class="loading-indicator">
+  <span class="loader"></span> Loading cars...
+</div>
+
+<!-- Error State -->
+<div *ngIf="error" class="error-message">
+  <span class="error-icon">⚠️</span> {{ error }}
+</div>
+
+<!-- Car List Table -->
+<div *ngIf="!loading && !error" class="car-table-container">
+  <table class="car-table">
+    <thead>
+      <tr>
+        <th (click)="onSortChange()" class="sortable-column">
+          Year
+          <span class="sort-arrow" [class.asc]="sortOrder" [class.desc]="!sortOrder">
+            &#8593;&#8595;
+          </span>
+        </th>
+        <th>Make</th>
+        <th>Model</th>
+        <th>License Plate</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let car of cars" >
+        <td (click)="viewCarDetails(car.id)" class="clickable-row">{{ car.year }}</td>
+        <td (click)="viewCarDetails(car.id)" class="clickable-row">{{ car.make }}</td>
+        <td (click)="viewCarDetails(car.id)" class="clickable-row">{{ car.model }}</td>
+        <td>{{ car.license_plate }}</td>
+        <td>
+          <button class="edit-btn" (click)="editCar(car)">Edit</button>
+          <button class="delete-btn" (click)="deleteCar(car.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    <button (click)="onPageChange(currentPage - 1)" [disabled]="currentPage <= 1">Prev</button>
+    <span>Page {{ currentPage }}</span>
+    <button (click)="onPageChange(currentPage + 1)" [disabled]="cars.length < itemsPerPage">Next</button>
+  </div>
+</div>
+
+<!-- No Data -->
+<div *ngIf="!loading && !error && cars.length === 0">
+  No cars found.
+</div>

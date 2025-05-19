@@ -1,0 +1,61 @@
+<!-- src/app/app.component.html -->
+<body [ngClass]="{ 'guest-background': !auth.isAuthenticated() }">
+
+  <!-- Authenticated Navbar -->
+  <nav class="auth-navbar" *ngIf="auth.isAuthenticated(); else guestNav">
+    <div class="nav-left">
+      <div class="dropdown">
+        <a class="dropdown-toggle">Cars▾</a>
+        <div class="dropdown-menu">
+          <a routerLink="/cars">All Cars</a>
+          <a routerLink="/tasks">Maintenance Tasks</a>
+          <a routerLink="/car-maintenance">Car Maintenance Records</a>
+        </div>
+      </div>
+      <a routerLink="/customers">Customers</a>
+      <a routerLink="/transactions">Transactions</a>
+      <a routerLink="/payments">Payments</a>
+    </div>
+    <div class="nav-right">
+      <a (click)="auth.logout()" class="logout-link">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Guest Navbar -->
+  <ng-template #guestNav>
+    <nav class="guest-navbar">
+      <div class="nav-center">
+        <a routerLink="/login">Login</a>
+        <a routerLink="/register">Register</a>
+      </div>
+    </nav>
+  </ng-template>
+
+  <!-- Main content -->
+  <router-outlet></router-outlet>
+
+  <!-- Chatbot Button (only for authenticated users) -->
+  <div *ngIf="auth.isAuthenticated()" class="chatbot-button" (click)="toggleChatbot()">
+    💬
+  </div>
+
+  <!-- Chatbot Window (only shown when chatbotOpen is true) -->
+  <div *ngIf="auth.isAuthenticated() && chatbotOpen" class="chatbot-window">
+    <div class="chatbot-header">
+      Chatbot
+      <span (click)="toggleChatbot()" class="close-btn">✖</span>
+    </div>
+    <div class="chatbot-body">
+      <div *ngFor="let message of chatbotMessages" class="chatbot-message">
+        {{ message }}
+      </div>
+    
+      <div class="chatbot-input">
+        <input type="text" [(ngModel)]="userMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..." />
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+    
+  </div>
+
+</body>

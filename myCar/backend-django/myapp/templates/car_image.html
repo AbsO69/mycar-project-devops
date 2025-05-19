@@ -1,0 +1,7 @@
+<!-- car_image.html -->
+<h2>{{ car.make }} {{ car.model }}</h2>
+{% if image_data %}
+    <img src="data:image/jpeg;base64,{{ image_data }}" width="400">
+{% else %}
+    <p>No image found.</p>
+{% endif %}

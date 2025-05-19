@@ -1,0 +1,53 @@
+<h2 class="page-title">Payments</h2>
+
+<div class="payment-list-container transaction-table-container">
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="loading-indicator">
+    <div class="loader"></div> Loading payments...
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="error-message">
+    <span class="error-icon">⚠️</span> {{ error }}
+  </div>
+
+  <!-- Payment Table -->
+  <table *ngIf="!loading && payments.length > 0" class="transaction-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Transaction</th>
+        <th>Amount</th>
+        <th>Method</th>
+        <th>Status</th>
+        <th>Receipt</th>
+        <th>Actions</th> <!-- 🆕 Added for delete button -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let payment of payments">
+        <td>{{ payment.id }}</td>
+        <td>{{ payment.transaction }}</td>
+        <td>{{ payment.payment_amount | currency }}</td>
+        <td>{{ payment.payment_method }}</td>
+        <td>{{ payment.payment_status }}</td>
+        <td>
+          <!-- <a *ngIf="payment.receipt_pdf" [href]="payment.receipt_pdf" target="_blank">
+            View Receipt
+          </a> -->
+          <a *ngIf="payment.receipt_pdf" [href]="getReceiptUrl(payment.receipt_pdf)" target="_blank">
+            View Receipt
+          </a>
+        </td>
+        <td class="action-buttons">
+          <button (click)="deletePayment(payment)" class="delete-btn">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No payments found -->
+  <div *ngIf="!loading && payments.length === 0" class="loading-indicator">
+    No payments found.
+  </div>
+</div>
