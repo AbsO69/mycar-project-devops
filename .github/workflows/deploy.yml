@@ -17,7 +17,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build backend image
-      run: docker build -t mycar-backend ./backend-django
+      run: docker build -t mycar-backend ./myCar/backend-django
 
     - name: Build frontend image
-      run: docker build -t mycar-frontend ./frontend-angular
+      run: docker build -t mycar-frontend ./myCar/frontend-angular
